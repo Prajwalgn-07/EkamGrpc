@@ -1,0 +1,15 @@
+{
+  "desiredCapabilities": [
+    {
+      "app": "sample_app.apk",
+      "appWaitActivity": "com.swaglabsmobileapp.MainActivity",
+      "platformName": "android",
+      "automationName": "UiAutomator2"
+    },
+    {
+      "app": "<app_name_with_extension>",
+      "platformName": "iOS",
+      "automationName": "XCUITest"
+    }
+  ]
+}
