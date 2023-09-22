@@ -11,7 +11,7 @@ public class BookTests extends BaseTests {
     private BookClient bookClient;
 
     public BookTests() {
-        bookClient = new BookClient();
+        bookClient = new BookClient("http://localhost:50055");
     }
 
     @Test

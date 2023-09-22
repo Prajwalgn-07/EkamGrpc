@@ -4,7 +4,6 @@ import com.testvagrant.ekam.api.retrofit.GrpcClient;
 import ekam.example.api.exception.AuthorNotFoundException;
 import ekam.example.api.exception.BookNotFoundException;
 import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 
 import java.net.URISyntaxException;
 
@@ -13,9 +12,9 @@ public class BookClient extends GrpcClient {
 
     com.endpoints.examples.bookstore.BookServiceGrpc.BookServiceBlockingStub bookServiceStub;
 
-    public BookClient()  {
+    public BookClient(String host) {
         try {
-            channel = build("http://localhost:50055");
+            channel = build(host);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e.getMessage());
         }

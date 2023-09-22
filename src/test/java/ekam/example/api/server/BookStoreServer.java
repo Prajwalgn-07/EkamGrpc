@@ -1,12 +1,8 @@
 package ekam.example.api.server;
 
-import com.endpoints.examples.bookstore.BookAuthorRequest;
-import com.endpoints.examples.bookstore.BookResponse;
-import com.endpoints.examples.bookstore.BookServiceGrpc;
-import com.endpoints.examples.bookstore.GetBookRequest;
+import ekam.example.api.service.BookService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
-import io.grpc.stub.StreamObserver;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -30,7 +26,7 @@ public class BookStoreServer {
         /* The port on which the server should run */
         int port = 50055;
         server = ServerBuilder.forPort(port)
-                .addService(new BookStoreServiceImpl())
+                .addService(new BookService.BookStoreServiceImpl())
                 .build()
                 .start();
         logger.info("Server started, listening on " + port);
@@ -58,49 +54,9 @@ public class BookStoreServer {
     /**
      * Await termination on the main thread since the grpc library uses daemon threads.
      */
-    private void blockUntilShutdown() throws InterruptedException {
+    public void blockUntilShutdown() throws InterruptedException {
         if (server != null) {
             server.awaitTermination();
-        }
-    }
-
-    static class BookStoreServiceImpl extends BookServiceGrpc.BookServiceImplBase {
-
-        @Override
-        public void getBook(GetBookRequest request, StreamObserver<BookResponse> responseObserver) {
-
-            BookResponse.Builder response = BookResponse.newBuilder();
-
-            int isbn = request.getIsbn();
-
-            if (isbn == 1) {
-                response.setResponseCode("200").setMessage("Success").build();
-            } else {
-                response.setResponseCode("200").setMessage("Failed").build();
-            }
-
-            responseObserver.onNext(response.build());
-
-            responseObserver.onCompleted();
-        }
-
-        @Override
-        public void getBooksViaAuthor(BookAuthorRequest request, StreamObserver<BookResponse> responseObserver) {
-            BookResponse.Builder response = BookResponse.newBuilder();
-
-            String author = request.getAuthor();
-
-            System.out.println("Author Request " + author);
-            logger.info("Author name " + author);
-
-            if (author.equals("Bob")) {
-                response.setResponseCode("200").setMessage("Success").build();
-            } else
-                response.setResponseCode("200").setMessage("Failed").build();
-
-            responseObserver.onNext(response.build());
-
-            responseObserver.onCompleted();
         }
     }
 }
